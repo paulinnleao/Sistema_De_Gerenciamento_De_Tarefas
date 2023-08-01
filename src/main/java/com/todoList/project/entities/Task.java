@@ -1,12 +1,10 @@
 package com.todoList.project.entities;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.todoList.project.enuns.TaskStatus;
 
 import jakarta.persistence.Entity;
@@ -29,8 +27,10 @@ public class Task implements Serializable{
 	private String name;
 	private String description;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant dateCreation;
-	private Date deadline;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant deadline;
 	
 	private int taskStatus;
 	
@@ -38,22 +38,14 @@ public class Task implements Serializable{
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	
-	
-	
-	public Task(Long id, String name, String description,Instant dateCreation,User user, TaskStatus taskStatus, String daedline) {
+	public Task(Long id, String name, String description,Instant dateCreation,User user, TaskStatus taskStatus, Instant deadline) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.dateCreation = dateCreation;
 		this.user = user;
 		setTaskStatus(taskStatus);
-		try {
-			this.deadline = sdf.parse(daedline);
-		}catch(ParseException e) {
-			e.printStackTrace();
-		}
+		this.deadline = deadline;
 	}
 	public Task() {
 	}
@@ -72,10 +64,10 @@ public class Task implements Serializable{
 	public void setDateCreation(Instant dateCreation) {
 		this.dateCreation = dateCreation;
 	}
-	public Date getDeadline() {
+	public Instant getDeadline() {
 		return deadline;
 	}
-	public void setDeadline(Date deadline) {
+	public void setDeadline(Instant deadline) {
 		this.deadline = deadline;
 	}
 	public Long getId() {
@@ -96,6 +88,8 @@ public class Task implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
