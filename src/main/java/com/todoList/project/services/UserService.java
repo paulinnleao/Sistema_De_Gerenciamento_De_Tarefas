@@ -23,7 +23,20 @@ public class UserService {
 		return obj.get();
 	}
 	
-	public void create(User user) {
-		userRepository.save(user);
+	public void delete(Long id) {
+		userRepository.deleteById(id);
+	}
+	
+	public User insert(User obj) {
+		return userRepository.save(obj);
+	}
+	public User update(Long id, User user) {
+		User entity = userRepository.getReferenceById(id);
+		updateData(entity, user);
+		return userRepository.save(entity);
+	}
+
+	private void updateData(User entity, User user) {
+		entity.setName(user.getName());
 	}
 }
