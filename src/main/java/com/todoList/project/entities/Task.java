@@ -3,7 +3,7 @@ package com.todoList.project.entities;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -28,22 +29,26 @@ public class Task implements Serializable{
 	private String name;
 	private String description;
 	
-	private LocalDate dateCreation;
+	private Instant dateCreation;
 	private Date deadline;
 	
 	private int taskStatus;
 	
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public Task(Long id, String name, String description, TaskStatus taskStatus, String daedline) {
+	
+	
+	public Task(Long id, String name, String description,Instant dateCreation,User user, TaskStatus taskStatus, String daedline) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.dateCreation = dateCreation;
+		this.user = user;
 		setTaskStatus(taskStatus);
-		dateCreation = LocalDate.now();
 		try {
 			this.deadline = sdf.parse(daedline);
 		}catch(ParseException e) {
@@ -61,10 +66,10 @@ public class Task implements Serializable{
 			this.taskStatus = taskStatus.getCode();
 		}
 	}
-	public LocalDate getDateCreation() {
+	public Instant getDateCreation() {
 		return dateCreation;
 	}
-	public void setDateCreation(LocalDate dateCreation) {
+	public void setDateCreation(Instant dateCreation) {
 		this.dateCreation = dateCreation;
 	}
 	public Date getDeadline() {

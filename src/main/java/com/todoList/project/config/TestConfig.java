@@ -19,6 +19,8 @@ public class TestConfig implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 	
 		userRepository.save(new User(null, "Paulo"));
+		userRepository.save(new User(null, "Lorena"));
+		userRepository.save(new User(null, "Isabela"));
 		
 	}
 	
