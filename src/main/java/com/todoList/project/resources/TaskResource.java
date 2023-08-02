@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.todoList.project.entities.Task;
+import com.todoList.project.enuns.TaskStatus;
 import com.todoList.project.services.TaskService;
 
 @RestController
@@ -45,13 +46,13 @@ public class TaskResource {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> delete(@RequestBody Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id){
 		taskService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(value="/{id}")
-	public ResponseEntity<Task> create(@PathVariable Long id, String status){
+	@PutMapping(value="/{id}/{status}")
+	public ResponseEntity<Task> update(@PathVariable Long id, @PathVariable TaskStatus status){
 		Task task = taskService.updateStatus(id, status);
 		return ResponseEntity.ok().body(task);
 	}
