@@ -45,17 +45,18 @@ public class TaskService {
 			}
 		}
 		
-		public Task updateStatus(Long id, String taskStatus) {
+		public Task updateStatus(Long id, TaskStatus taskStatus) {
 			try {
 				Task task = taskRepository.getReferenceById(id);
 				newStatus(task, taskStatus);
+				System.out.println("TASK TASK TASK : : \n\n\n\\/\\/\\/\\/ "+ task + "^^^^^^\n\n\n\n");
 				return taskRepository.save(task);
 			}catch(EntityNotFoundException e) {
 				throw new ResourceNotFoundException(id);
 			}
 		}
 
-		private void newStatus(Task task, String taskStatus) {
-			task.setTaskStatus(TaskStatus.valueOf(taskStatus));
+		private void newStatus(Task task, TaskStatus taskStatus) {
+			task.setTaskStatus(taskStatus);
 		}
 }
